@@ -1,0 +1,12 @@
+testmain : main.cpp  libtest.so
+	g++ -c main.cpp
+	g++ -o testmain  -L.  -ldl -Wl,-rpath,.   -ltest -L/usr/local/cuda/lib64 -lcudart main.o
+
+libtest.so : link.o
+	g++  -shared -Wl,-soname,libtest.so -o libtest.so    test1.o test2.o link.o  -L/usr/local/cuda/lib64  -lcudart
+link.o : test1.cu test2.cu   test1.h test2.h
+	nvcc  -m64   -arch=sm_20 -dc  -Xcompiler '-fPIC'  test1.cu test2.cu
+	nvcc  -m64   -arch=sm_20 -Xcompiler '-fPIC' -dlink test1.o test2.o -o link.o
+
+clean :
+	rm -f testmain test1.o test2.o link.o libtest.so main.o

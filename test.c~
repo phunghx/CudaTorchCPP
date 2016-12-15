@@ -1,0 +1,5 @@
+void dummy(int* ptrFromLua, int size)	{
+	for (int i=1;i < size;i++)
+		ptrFromLua[i] = i+1;
+	return;
+}

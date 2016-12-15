@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <cuda.h>
+#include <cuda_device_runtime_api.h>
+#define DSIZE 1024
+#define DVAL 20
+#define nTPB 256
+
+__global__ void my_kernel2(int *data){
+  int idx = threadIdx.x + (blockDim.x *blockIdx.x);
+  if (idx < DSIZE) data[idx] =+ DVAL;
+}
+extern "C"
+{
+	int my_test_func2();
+}
+int my_test_func2(){
+
+  int *d_data, *h_data;
+  h_data = (int *) malloc(DSIZE * sizeof(int));
+  if (h_data == 0) {printf("malloc fail\n"); exit(1);}
+  cudaMalloc((void **)&d_data, DSIZE * sizeof(int));
+  cudaCheckErrors("cudaMalloc fail");
+  for (int i = 0; i < DSIZE; i++) h_data[i] = 0;
+  cudaMemcpy(d_data, h_data, DSIZE * sizeof(int), cudaMemcpyHostToDevice);
+  cudaCheckErrors("cudaMemcpy fail");
+  my_kernel2<<<((DSIZE+nTPB-1)/nTPB), nTPB>>>(d_data);
+  cudaDeviceSynchronize();
+  cudaCheckErrors("kernel");
+  cudaMemcpy(h_data, d_data, DSIZE * sizeof(int), cudaMemcpyDeviceToHost);
+  cudaCheckErrors("cudaMemcpy 2");
+  for (int i = 0; i < DSIZE; i++)
+    if (h_data[i] != DVAL) {printf("Results check failed at offset %d, data was: %d, should be %d\n", i, h_data[i], DVAL); exit(1);}
+  printf("Results check 2 passed!\n");
+  return 0;
+}

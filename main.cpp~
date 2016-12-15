@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include "test1.h"
+#include "test2.h"
+
+int main(){
+
+  my_test_func1();
+  my_test_func2();
+  return 0;
+}

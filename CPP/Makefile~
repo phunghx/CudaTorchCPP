@@ -1,0 +1,4 @@
+#libProjects.so: file1.o
+#	$(CXX)  $^ -o $@ -fPIC -shared 
+
+file1.so : CXXFLAGS+=-fPIC -shared

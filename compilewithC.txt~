@@ -1,0 +1,11 @@
+with c/cpp : /data5/LuaExperiment/torch-Developer-Guide/FFI-so/src
+	Change source file in Makefile
+
+cuda support: /data5/LuaExperiment/cuda-convnet2.torch
+	cudaconv3/src/test2.cu
+	add function with extern "C" to cudaconv3/include/cudaconv2.cuh
+	add function to ffi.lua
+	test2.lua : class
+	add new lua file in to init.lua
+	
+	luarocks
