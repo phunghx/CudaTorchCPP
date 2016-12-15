@@ -1,0 +1,9 @@
+LIBOPTS = -shared
+CFLAGS = -fPIC
+CC = gcc
+
+libasdf.so : asdf.cpp
+	$(CC) $< $(LIBOPTS) $(CFLAGS) -o $@
+
+clean :
+	rm *.so
