@@ -87,3 +87,9 @@ Lua loop computation time 2890.92 ms
 Which means, *C* completed the task in `1/30` of a second, whereas *Lua* takes almost `3` seconds for finishing its `for` loop. We can make *Lua* perform better, and we'll do it in the next tutorial session.
 
 Another reason about *why* you are loving this tutorial is that now you can use whatever compiled library — like some cool stuff from [*OpenCV*](http://opencv.org/), [*FFmpeg*](https://www.ffmpeg.org/) or even from your own *shared library* you just compiled with a `Makefile` — and interface it with *Torch*. This means your horizons have never been so wide! Go, and start interfacing a new library!
+
+Complie with CUDA file: vectorAdd.cu
+
+nvcc vectorAdd.cu -Xcompiler -fpic -shared -o vectorAdd.so
+
+Then I can use this as previous exampel -- greate :)
